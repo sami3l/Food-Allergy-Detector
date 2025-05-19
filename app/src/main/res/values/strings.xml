@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FoodAlergy</string>
+    <string name="your_allergies_peanuts_milk_etc">Your Allergies: Peanuts, Milk, etc.</string>
+    <string name="scan_a_product">Scan a Product</string>
+    <string name="last_scans">last_scans!</string>
+    <string name="profile_button">Profile</string>
+    <string name="settings_button">Settings</string>
+    <string name="scan_product">Scan a Product</string>
+    <string name="your_allergies">Your Allergies:</string>
+    <string name="hello">Hello!</string>
+
+    <string name="cd_scan">Scan a product</string>
+    <string name="hello_user">Hello, %1$s!</string>
 </resources>

@@ -12,38 +12,79 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var nameEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var allergiesEditText: EditText
+    private lateinit var signUpButton: Button
+    private lateinit var loginLink: TextView
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val name = findViewById<EditText>(R.id.name)
-        val username = findViewById<EditText>(R.id.username)
-        val email = findViewById<EditText>(R.id.email)
-        val password = findViewById<EditText>(R.id.password)
-        val registerBtn = findViewById<Button>(R.id.registerButton)
-        val LoginLink = findViewById<TextView>(R.id.loginLink)
-        LoginLink.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        usernameEditText = findViewById(R.id.editTextUsername)
+        passwordEditText = findViewById(R.id.editTextPassword)
+        nameEditText = findViewById(R.id.editTextName)
+        emailEditText = findViewById(R.id.editTextEmail)
+        allergiesEditText = findViewById(R.id.editTextAllergies)
+        signUpButton = findViewById(R.id.buttonSignUp)
+        loginLink = findViewById(R.id.textLoginLink)
+        progressBar = findViewById(R.id.progressBar)
+
+        progressBar.visibility = ProgressBar.INVISIBLE
+
+        signUpButton.setOnClickListener {
+            registerUser()
         }
 
-        registerBtn.setOnClickListener {
-            val request = RegisterRequest(
-                name.text.toString(),
-                username.text.toString(),
-                email.text.toString(),
-                password.text.toString()
-            )
-
-            RetrofitClient.authApi.register(request).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    Toast.makeText(this@RegisterActivity, "Inscription réussie 🎉", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Toast.makeText(this@RegisterActivity, "Erreur réseau ", Toast.LENGTH_SHORT).show()
-                }
-            })
+        loginLink.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
+
+    private fun registerUser() {
+        val username = usernameEditText.text.toString().trim()
+        val password = passwordEditText.text.toString().trim()
+        val name = nameEditText.text.toString().trim()
+        val email = emailEditText.text.toString().trim()
+        val allergiesRaw = allergiesEditText.text.toString().trim()
+        val allergies = if (allergiesRaw.isNotEmpty()) allergiesRaw.split(",").map { it.trim() } else listOf()
+
+        if (username.isEmpty() || password.isEmpty() || name.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        progressBar.visibility = ProgressBar.VISIBLE
+
+        val registerRequest = RegisterRequest(
+            username = username,
+            password = password,
+            name = name,
+            email = email,
+            allergies = allergies
+        )
+
+        RetrofitClient.authApi.register(registerRequest).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                progressBar.visibility = ProgressBar.INVISIBLE
+                if (response.isSuccessful) {
+                    Toast.makeText(this@RegisterActivity, "Sign up successful! Please sign in.", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this@RegisterActivity, "Sign up failed: " + response.code(), Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                progressBar.visibility = ProgressBar.INVISIBLE
+                Toast.makeText(this@RegisterActivity, "Sign up failed: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })}
 }

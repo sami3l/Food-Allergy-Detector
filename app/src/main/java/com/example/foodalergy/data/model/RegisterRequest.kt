@@ -1,10 +1,11 @@
+// File: data/model/RegisterRequest.kt
 package com.example.foodalergy.data.model
 
-
-
 data class RegisterRequest(
-    val name: String,
     val username: String,
+    val password: String,
+    val name: String,
     val email: String,
-    val password: String
+    val allergies: List<String> = listOf(),
+    val role: String = "USER"
 )

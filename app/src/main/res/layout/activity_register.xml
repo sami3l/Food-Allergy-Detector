@@ -1,22 +1,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:padding="16dp"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <EditText android:id="@+id/name" android:hint="Nom complet" android:layout_width="match_parent" android:layout_height="wrap_content"  android:padding="12dp"         />
-    <EditText android:id="@+id/username" android:hint="Nom d'utilisateur" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" />
-    <EditText android:id="@+id/email" android:hint="Email" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp"         />
-    <EditText android:id="@+id/password" android:hint="Mot de passe" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp"         />
-    <Button android:id="@+id/registerButton" android:text="S'inscrire" android:layout_width="match_parent" android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/loginLink"
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:hint="Username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editTextName"
+        android:hint="Full Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/editTextAllergies"
+        android:hint="Allergies (comma separated)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/buttonSignUp"
+        android:text="Sign Up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Déjà un compte ? Se connecter"
-        android:textColor="@android:color/holo_blue_dark"
-        android:layout_gravity="center"
-        android:paddingTop="16dp"
-        android:textSize="14sp" />
-
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/textLoginLink"
+        android:text="Already have an account? Sign In"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#0000EE"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

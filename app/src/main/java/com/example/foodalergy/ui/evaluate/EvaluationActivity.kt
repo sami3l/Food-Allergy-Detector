@@ -120,7 +120,7 @@ class EvaluationActivity : AppCompatActivity() {
             }
 
             val request = EvaluateRequest(
-                userId = userId,
+
                 productText = scannedProduct?.description ?: "",
                 barcode = scannedProduct?.barcode ?: "",
                 productName = scannedProduct?.name ?: ""

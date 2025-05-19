@@ -19,6 +19,4 @@ interface AuthApi {
     @GET("api/users/by-username/{username}")
     fun getUserByUsername(@Path("username") username: String): Call<User>
 
-
-
 }

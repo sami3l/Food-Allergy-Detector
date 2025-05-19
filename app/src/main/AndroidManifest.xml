@@ -22,7 +22,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true" />
 
         <activity
@@ -40,6 +40,9 @@
         </activity>
 
         <activity android:name=".ui.evaluate.EvaluationActivity" />
+        <activity android:name=".ui.user.ProfileActivity" />
+        <activity android:name=".ui.user.SettingsActivity" />
+        <activity android:name=".ui.scan.ScanActivity" />
 
     </application>
 

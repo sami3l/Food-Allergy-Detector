@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Allergies input -->
+        <EditText
+            android:id="@+id/editTextAllergies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Entrez vos allergies (séparées par des virgules)"
+            android:inputType="text"
+            android:padding="12dp" />
+
+        <!-- Scan button -->
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scanner un produit"
+            android:layout_marginTop="16dp" />
+
+        <!-- Scan result -->
+        <TextView
+            android:id="@+id/textScanResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Produit scanné : "
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <!-- Evaluate button -->
+        <Button
+            android:id="@+id/btnEvaluate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Évaluer les risques"
+            android:layout_marginTop="16dp" />
+
+        <!-- Evaluation result -->
+        <TextView
+            android:id="@+id/textEvaluationResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Résultat de l'évaluation :"
+            android:layout_marginTop="12dp" />
+
+        <!-- Delete scan button -->
+        <Button
+            android:id="@+id/btnDeleteScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Supprimer ce scan"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

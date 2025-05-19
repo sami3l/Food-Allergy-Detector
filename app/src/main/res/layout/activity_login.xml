@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="16dp"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+
+    >
+
+
+    <TextView
+        android:id="@+id/customTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connexion - Food Allergy Detector"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/holo_blue_dark"
+        android:paddingBottom="24dp"/>
+
+
+    <EditText android:id="@+id/username" android:hint="UserName" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" />
+    <EditText android:id="@+id/password" android:hint="Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" />
+    <Button android:id="@+id/loginButton" android:text="Se connecter" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/registerLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Créer un compte"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="14sp"
+        android:layout_gravity="center"
+        android:paddingTop="16dp"/>
+</LinearLayout>

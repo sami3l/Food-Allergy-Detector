@@ -1,25 +1,29 @@
 package com.example.foodalergy.data.network
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import android.content.Context
+import com.example.foodalergy.App
 import com.example.foodalergy.data.network.ScanApi
 import com.example.foodalergy.data.network.UserApi
+import com.example.foodalergy.data.network.AllergyApi
 import com.useapi.foodallergydetector.data.network.AuthApi
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    // Change this BASE_URL if running on a real device (use your PC's local IP instead)
-    private const val BASE_URL = "http://192.168.11.128:8082/" // Note the trailing slash for Retrofit best practice
+    private const val BASE_URL = "http://192.168.11.128:8082/" // ✅ ton IP locale pour tests
 
+    // Retrofit singleton avec client sécurisé
     private val retrofit: Retrofit by lazy {
-        val interceptor = HttpLoggingInterceptor().apply {
+        val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            .addInterceptor(logging)
+            .addInterceptor(AuthInterceptor(App.context)) // ✅ injecte le token dynamiquement
             .build()
 
         Retrofit.Builder()
@@ -29,7 +33,7 @@ object RetrofitClient {
             .build()
     }
 
-    // API endpoints
+    // API Services
     val authApi: AuthApi by lazy {
         retrofit.create(AuthApi::class.java)
     }
@@ -38,7 +42,7 @@ object RetrofitClient {
         retrofit.create(ScanApi::class.java)
     }
 
-    val userApi: UserApi by lazy { // fixed name (lowercase)
+    val userApi: UserApi by lazy {
         retrofit.create(UserApi::class.java)
     }
 
@@ -46,4 +50,3 @@ object RetrofitClient {
         retrofit.create(AllergyApi::class.java)
     }
 }
-

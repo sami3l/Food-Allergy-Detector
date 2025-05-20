@@ -14,6 +14,7 @@ interface ScanApi {
     @GET("/api/scan/{scanId}")
     fun getScan(@Path("scanId") scanId: String): Call<ProductResponse>
 
+    @Headers("Authorization: Bearer <token>")
     @POST("/api/evaluate")
     fun evaluate(@Body request: EvaluateRequest): Call<EvaluateResponse>
 

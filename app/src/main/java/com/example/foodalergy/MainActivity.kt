@@ -1,6 +1,5 @@
 package com.example.foodalergy.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -9,10 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foodalergy.R
-import com.example.foodalergy.ui.auth.LoginActivity
+import com.example.foodalergy.data.store.UserSessionManager
 import com.example.foodalergy.ui.evaluate.EvaluationActivity
 import com.example.foodalergy.ui.user.ProfileActivity
-import com.example.foodalergy.ui.scan.ScanActivity
 import com.example.foodalergy.ui.user.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
@@ -27,30 +25,27 @@ class MainActivity : AppCompatActivity() {
         val buttonScan = findViewById<Button>(R.id.buttonScan)
         val textWelcome = findViewById<TextView>(R.id.textWelcome)
 
-        // --- Retrieve user name from SharedPreferences (example key: "user_name") ---
-        val prefs = getSharedPreferences(LoginActivity.PREFS_NAME, Context.MODE_PRIVATE)
-        val username = prefs.getString(LoginActivity.KEY_USERNAME, null)
+        // --- Retrieve user name using UserSessionManager ---
+        val username = UserSessionManager(this).getUsername()
 
-        textWelcome.text = if (!username.isNullOrEmpty()) "Hello, $username!" else "Hello, User!"
+        textWelcome.text = if (username.isNotEmpty()) "Hello, $username!" else "Hello, User!"
 
+        // You can remove this Toast if you want
         Toast.makeText(this, "Username in prefs: $username", Toast.LENGTH_LONG).show()
 
         // --- Open ProfileActivity ---
         buttonProfile.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
         // --- Open SettingsActivity ---
         buttonSettings.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        // --- Open ScanActivity ---
+        // --- Open EvaluationActivity ---
         buttonScan.setOnClickListener {
-            val intent = Intent(this, EvaluationActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EvaluationActivity::class.java))
         }
     }
 }

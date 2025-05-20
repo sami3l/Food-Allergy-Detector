@@ -5,7 +5,7 @@ data class User(
     val username: String,
     val email: String,
     val password: String,
-    val name: String,
+    val name: String?,
     val allergies: List<String> = listOf(),
     val role: String = "USER"
 )

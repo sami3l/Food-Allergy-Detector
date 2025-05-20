@@ -14,7 +14,7 @@
             android:id="@+id/editTextAllergies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Entrez vos allergies (séparées par des virgules)"
+            android:hint="@string/entrez_vos_allergies_s_par_es_par_des_virgules"
             android:inputType="text"
             android:padding="12dp" />
 
@@ -23,7 +23,7 @@
             android:id="@+id/btnScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scanner un produit"
+            android:text="@string/scanner_un_produit"
             android:layout_marginTop="16dp" />
 
         <!-- Scan result -->
@@ -31,33 +31,80 @@
             android:id="@+id/textScanResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Produit scanné : "
+            android:text="@string/produit_scann"
             android:textStyle="bold"
             android:layout_marginTop="12dp" />
+
+        <!-- Manual entry toggle button -->
+        <Button
+            android:id="@+id/btnManualEntry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_product_manually"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Manual entry fields -->
+        <LinearLayout
+            android:id="@+id/manualEntryLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/editProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/product_name" />
+
+            <EditText
+                android:id="@+id/editBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/barcode" />
+
+            <EditText
+                android:id="@+id/editProductText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/product_description" />
+        </LinearLayout>
 
         <!-- Evaluate button -->
         <Button
             android:id="@+id/btnEvaluate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Évaluer les risques"
+            android:text="@string/evaluate_product"
             android:layout_marginTop="16dp" />
 
         <!-- Evaluation result -->
+
+        <ImageView
+            android:id="@+id/imageProduct"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:visibility="visible"/>
         <TextView
             android:id="@+id/textEvaluationResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Résultat de l'évaluation :"
-            android:layout_marginTop="12dp" />
+            android:text=""
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black"
+            android:textStyle="italic" />
+
 
         <!-- Delete scan button -->
         <Button
             android:id="@+id/btnDeleteScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Supprimer ce scan"
-            android:layout_marginTop="16dp"
+            android:text="@string/delete_scan"
+            android:layout_marginTop="8dp"
             android:visibility="gone" />
 
     </LinearLayout>

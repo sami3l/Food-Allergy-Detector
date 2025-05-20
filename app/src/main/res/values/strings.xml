@@ -11,4 +11,19 @@
 
     <string name="cd_scan">Scan a product</string>
     <string name="hello_user">Hello, %1$s!</string>
+    <string name="produit_scann">Produit scanné :</string>
+    <string name="enter_product_manually">Enter Product Manually</string>
+    <string name="product_name">Product Name</string>
+    <string name="barcode">Barcode</string>
+    <string name="product_description">Product Description</string>
+    <string name="entrez_vos_allergies_s_par_es_par_des_virgules">Entrez vos allergies (séparées par des virgules)</string>
+    <string name="scanner_un_produit">Scanner un produit</string>
+    <string name="evaluate_product">evaluate_product\n</string>
+    <string name="delete_scan">delete_scan\n</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="allergies_s_par_es_par_une_virgule">Allergies séparées par une virgule</string>
+    <string name="edit_allergies">Edit Allergies</string>
+    <string name="save">Save</string>
+    <string name="logout">Logout</string>
+    <string name="nom">Nom</string>
 </resources>

@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://192.168.11.128:8082/" // ✅ ton IP locale pour tests
+    private const val BASE_URL = "http://24.10.19.75:8082/" //
 
     // Retrofit singleton avec client sécurisé
     private val retrofit: Retrofit by lazy {
@@ -23,7 +23,7 @@ object RetrofitClient {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(logging)
-            .addInterceptor(AuthInterceptor(App.context)) // ✅ injecte le token dynamiquement
+            .addInterceptor(AuthInterceptor(App.context)) //
             .build()
 
         Retrofit.Builder()

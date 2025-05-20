@@ -26,4 +26,6 @@
     <string name="save">Save</string>
     <string name="logout">Logout</string>
     <string name="nom">Nom</string>
+    <string name="allergy_evaluation">Allergy Evaluation</string>
+    <string name="enter_your_allergies_comma_separated">Enter your allergies (comma-separated)</string>
 </resources>

@@ -2,53 +2,72 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/backgroundColor"
+    android:padding="20dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="8dp">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/allergy_evaluation"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <!-- Allergies input -->
         <EditText
             android:id="@+id/editTextAllergies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/entrez_vos_allergies_s_par_es_par_des_virgules"
-            android:inputType="text"
-            android:padding="12dp" />
+            android:hint="@string/enter_your_allergies_comma_separated"
+            android:background="@drawable/edit_text_background"
+            android:padding="12dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp" />
 
         <!-- Scan button -->
         <Button
             android:id="@+id/btnScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/scanner_un_produit"
-            android:layout_marginTop="16dp" />
+            android:text="Scan a product"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
 
         <!-- Scan result -->
         <TextView
             android:id="@+id/textScanResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/produit_scann"
+            android:text="Scanned product:"
             android:textStyle="bold"
-            android:layout_marginTop="12dp" />
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
 
         <!-- Manual entry toggle button -->
         <Button
             android:id="@+id/btnManualEntry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/enter_product_manually"
-            android:layout_marginTop="12dp"/>
+            android:text="Enter manually"
+            android:backgroundTint="@color/secondaryColor"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp" />
 
         <!-- Manual entry fields -->
         <LinearLayout
             android:id="@+id/manualEntryLayout"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:visibility="gone"
             android:padding="8dp">
 
@@ -56,19 +75,28 @@
                 android:id="@+id/editProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/product_name" />
+                android:hint="Product name"
+                android:background="@drawable/edit_text_background"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/editBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/barcode" />
+                android:hint="Barcode"
+                android:background="@drawable/edit_text_background"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/editProductText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/product_description" />
+                android:hint="Product description"
+                android:background="@drawable/edit_text_background"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp" />
         </LinearLayout>
 
         <!-- Evaluate button -->
@@ -76,44 +104,46 @@
             android:id="@+id/btnEvaluate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/evaluate_product"
-            android:layout_marginTop="16dp" />
+            android:text="Evaluate product"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Evaluation result -->
+        <!-- Product image -->
         <ImageView
             android:id="@+id/imageViewProduct"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
-            android:visibility="visible" />
+            android:layout_marginBottom="16dp" />
 
+        <!-- Progress bar -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginBottom="16dp" />
 
+        <!-- Evaluation result -->
         <TextView
             android:id="@+id/textEvaluationResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginTop="8dp"
             android:textColor="@android:color/black"
-            android:textStyle="italic" />
-
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
 
         <!-- Delete scan button -->
         <Button
             android:id="@+id/btnDeleteScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/delete_scan"
-            android:layout_marginTop="8dp"
+            android:text="Delete scan"
+            android:backgroundTint="#FF4444"
+            android:textColor="@android:color/white"
             android:visibility="gone" />
-
     </LinearLayout>
 </ScrollView>

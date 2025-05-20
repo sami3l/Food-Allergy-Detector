@@ -60,16 +60,28 @@ dependencies {
     // ZXing pour scanner QR
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
+    // Material Components (Bottom Nav, Cards, Buttons, etc.)
+    implementation("com.google.android.material:material:1.11.0")
 
+    // Lottie animations
+    implementation("com.airbnb.android:lottie:6.0.0")
 
-    // AndroidX + tests
+    // Navigation Component (Drawer/Fragment Nav)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+    // AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 
 }
 
@@ -59,6 +60,7 @@ dependencies {
     // ZXing pour scanner QR
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 
 

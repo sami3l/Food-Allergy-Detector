@@ -5,6 +5,7 @@ package com.example.foodalergy.data.network
 import com.example.foodalergy.data.model.EvaluateRequest
 import com.example.foodalergy.data.model.EvaluateResponse
 import com.example.foodalergy.data.model.HistoryItem
+import com.example.foodalergy.data.model.ProductInfoResponse
 import com.example.foodalergy.data.model.ProductResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -26,6 +27,10 @@ interface ScanApi {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 10
     ): Call<List<HistoryItem>>
+
+    @GET("/api/product/info")
+    fun getProductInfo(@Query("barcode") barcode: String): Call<ProductInfoResponse>
+
 
 
 

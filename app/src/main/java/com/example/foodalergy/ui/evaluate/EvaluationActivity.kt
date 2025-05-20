@@ -9,11 +9,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
+import com.bumptech.glide.Glide
 import com.example.foodalergy.R
-import com.example.foodalergy.data.model.*
+import com.example.foodalergy.data.model.ProductInfoResponse
+import com.example.foodalergy.data.model.ProductResponse
 import com.example.foodalergy.data.network.RetrofitClient
-import com.example.foodalergy.data.store.UserSessionManager
 import com.google.zxing.integration.android.IntentIntegrator
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +21,6 @@ import retrofit2.Response
 
 class EvaluationActivity : AppCompatActivity() {
 
-    private lateinit var editTextAllergies: EditText
     private lateinit var btnScan: Button
     private lateinit var textScanResult: TextView
     private lateinit var btnEvaluate: Button
@@ -30,7 +29,6 @@ class EvaluationActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var imageViewProduct: ImageView
 
-    // Manual Entry
     private lateinit var btnManualEntry: Button
     private lateinit var manualEntryLayout: LinearLayout
     private lateinit var editProductName: EditText
@@ -40,6 +38,7 @@ class EvaluationActivity : AppCompatActivity() {
     private var isManualMode = false
     private var lastScanId: String? = null
     private var scannedProduct: ProductResponse? = null
+    private var currentProductInfo: ProductInfoResponse? = null
 
     private val CAMERA_PERMISSION_CODE = 100
 
@@ -48,8 +47,6 @@ class EvaluationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_evaluation)
         title = "Évaluation des allergies"
 
-        // Init views
-        editTextAllergies = findViewById(R.id.editTextAllergies)
         btnScan = findViewById(R.id.btnScan)
         textScanResult = findViewById(R.id.textScanResult)
         btnEvaluate = findViewById(R.id.btnEvaluate)
@@ -58,7 +55,6 @@ class EvaluationActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         imageViewProduct = findViewById(R.id.imageViewProduct)
 
-        // Manual
         btnManualEntry = findViewById(R.id.btnManualEntry)
         manualEntryLayout = findViewById(R.id.manualEntryLayout)
         editProductName = findViewById(R.id.editProductName)
@@ -69,22 +65,28 @@ class EvaluationActivity : AppCompatActivity() {
 
         btnScan.setOnClickListener { startQRScanner() }
         btnEvaluate.setOnClickListener { evaluateRisk() }
-        btnDeleteScan.setOnClickListener { lastScanId?.let { deleteScan(it) } }
+        btnDeleteScan.setOnClickListener {
+            lastScanId?.let { deleteScan(it) }
+            clearScanData()
+        }
 
         btnManualEntry.setOnClickListener {
             isManualMode = !isManualMode
             manualEntryLayout.visibility = if (isManualMode) View.VISIBLE else View.GONE
-            btnManualEntry.text = if (isManualMode) "Cancel Manual Entry" else getString(R.string.enter_product_manually)
+            btnManualEntry.text =
+                if (isManualMode) "Cancel Manual Entry" else getString(R.string.enter_product_manually)
             if (!isManualMode) {
                 editProductName.text.clear()
                 editBarcode.text.clear()
                 editProductText.text.clear()
+                currentProductInfo = null
             }
         }
     }
 
     private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
         }
     }
@@ -100,85 +102,121 @@ class EvaluationActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null && result.contents != null) {
-            val scanId = result.contents
-            lastScanId = scanId
-            getProductFromScan(scanId)
+            val barcode = result.contents.trim().replace("\"", "")
+            lastScanId = barcode
+            textScanResult.text = "Scan détecté : $barcode"
+            getProductFromScan(barcode)
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    private fun getProductFromScan(scanId: String) {
+    private fun getProductFromScan(barcode: String) {
         textScanResult.text = "Chargement du produit..."
         imageViewProduct.setImageDrawable(null)
+        progressBar.visibility = View.VISIBLE
+        btnEvaluate.isEnabled = false
 
-        RetrofitClient.scanApi.getScan(scanId).enqueue(object : Callback<ProductResponse> {
-            override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
+        RetrofitClient.scanApi.getProductInfo(barcode).enqueue(object : Callback<ProductInfoResponse> {
+            override fun onResponse(call: Call<ProductInfoResponse>, response: Response<ProductInfoResponse>) {
+                btnEvaluate.isEnabled = true
+                progressBar.visibility = View.GONE
+
                 if (response.isSuccessful && response.body() != null) {
-                    scannedProduct = response.body()
-                    textScanResult.text = "Produit : ${scannedProduct?.name ?: "Inconnu"}"
-
-                    btnDeleteScan.visibility = Button.VISIBLE
+                    val product = response.body()!!
+                    currentProductInfo = product
+                    scannedProduct = ProductResponse(
+                        id = product.barcode ?: "",
+                        name = product.productName,
+                        barcode = barcode,
+                        description = product.ingredients ?: ""
+                    )
+                    displayProductInfo(product)
+                    btnDeleteScan.visibility = View.VISIBLE
                 } else {
                     textScanResult.text = "Produit introuvable"
                 }
             }
 
-            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-                textScanResult.text = "Erreur : ${t.message}"
+            override fun onFailure(call: Call<ProductInfoResponse>, t: Throwable) {
+                btnEvaluate.isEnabled = true
+                progressBar.visibility = View.GONE
+                textScanResult.text = "Erreur réseau : ${t.message}"
             }
         })
     }
 
+    private fun displayProductInfo(product: ProductInfoResponse) {
+        textScanResult.text = """
+            🧾 Produit : ${product.productName ?: "Non spécifié"}
+            📄 Ingrédients : ${product.ingredients ?: "Non spécifiés"}
+            🚨 Allergènes : ${product.allergens?.joinToString(", ") ?: "Aucun"}
+        """.trimIndent()
+
+        if (!product.imageUrl.isNullOrEmpty()) {
+            Glide.with(this@EvaluationActivity)
+                .load(product.imageUrl)
+                .into(imageViewProduct)
+        } else {
+            imageViewProduct.setImageDrawable(null)
+        }
+    }
+
     private fun evaluateRisk() {
-        val userId = UserSessionManager(this).getUserId()
-        if (userId.isEmpty()) {
-            textEvaluationResult.text = "ID utilisateur introuvable dans la session"
+        if (!isManualMode && currentProductInfo != null) {
+            displayEvaluationResult(currentProductInfo!!)
             return
         }
 
-        val request = if (isManualMode) {
-            EvaluateRequest(
-                productText = editProductText.text.toString(),
-                barcode = editBarcode.text.toString(),
-                productName = editProductName.text.toString()
-            )
+        val barcode = if (isManualMode) {
+            editBarcode.text.toString().trim()
         } else {
-            EvaluateRequest(
-                productText = scannedProduct?.description ?: "",
-                barcode = scannedProduct?.barcode ?: "",
-                productName = scannedProduct?.name ?: ""
-            )
+            scannedProduct?.barcode ?: ""
         }
 
-        // UI loading state
+        if (barcode.isEmpty()) {
+            textEvaluationResult.text = "Code-barres introuvable"
+            return
+        }
+
         btnEvaluate.isEnabled = false
         progressBar.visibility = View.VISIBLE
-        textEvaluationResult.text = "Évaluation en cours..."
+        textEvaluationResult.text = "Chargement des infos produit..."
 
-        RetrofitClient.scanApi.evaluate(request).enqueue(object : Callback<EvaluateResponse> {
-            override fun onResponse(call: Call<EvaluateResponse>, response: Response<EvaluateResponse>) {
+        RetrofitClient.scanApi.getProductInfo(barcode).enqueue(object : Callback<ProductInfoResponse> {
+            override fun onResponse(call: Call<ProductInfoResponse>, response: Response<ProductInfoResponse>) {
                 btnEvaluate.isEnabled = true
                 progressBar.visibility = View.GONE
+
                 if (response.isSuccessful && response.body() != null) {
-                    val result = response.body()
-                    textEvaluationResult.text = """
-                        🧾 Produit : ${result?.productName}
-                        ⚠️ Risque : ${result?.riskLevel}
-                        🧪 Source : ${result?.source}
-                        🚨 Allergènes détectés : ${result?.allergens?.joinToString(", ") ?: "Aucun"}
-                    """.trimIndent()
+                    val result = response.body()!!
+                    currentProductInfo = result
+                    displayEvaluationResult(result)
                 } else {
-                    textEvaluationResult.text = "Erreur d’évaluation"
+                    textEvaluationResult.text = "Erreur lors de la récupération"
                 }
             }
 
-            override fun onFailure(call: Call<EvaluateResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ProductInfoResponse>, t: Throwable) {
                 btnEvaluate.isEnabled = true
                 progressBar.visibility = View.GONE
-                textEvaluationResult.text = "Échec : ${t.message}"
+                textEvaluationResult.text = "Erreur réseau : ${t.message}"
             }
         })
+    }
+
+    private fun displayEvaluationResult(product: ProductInfoResponse) {
+        textEvaluationResult.text = """
+            🧾 Produit : ${product.productName ?: "Non spécifié"}
+            📄 Ingrédients : ${product.ingredients ?: "Non spécifiés"}
+            🚨 Allergènes : ${product.allergens?.joinToString(", ") ?: "Aucun"}
+        """.trimIndent()
+
+        if (!product.imageUrl.isNullOrEmpty()) {
+            Glide.with(this@EvaluationActivity)
+                .load(product.imageUrl)
+                .into(imageViewProduct)
+        }
     }
 
     private fun deleteScan(scanId: String) {
@@ -186,10 +224,7 @@ class EvaluationActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@EvaluationActivity, "Scan supprimé", Toast.LENGTH_SHORT).show()
-                    btnDeleteScan.visibility = Button.GONE
-                    textScanResult.text = ""
-                    scannedProduct = null
-                    imageViewProduct.setImageDrawable(null)
+                    clearScanData()
                 }
             }
 
@@ -197,5 +232,15 @@ class EvaluationActivity : AppCompatActivity() {
                 Toast.makeText(this@EvaluationActivity, "Erreur : ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun clearScanData() {
+        btnDeleteScan.visibility = View.GONE
+        textScanResult.text = ""
+        textEvaluationResult.text = ""
+        scannedProduct = null
+        currentProductInfo = null
+        lastScanId = null
+        imageViewProduct.setImageDrawable(null)
     }
 }

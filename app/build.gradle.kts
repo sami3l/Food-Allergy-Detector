@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
 }
 
 android {
@@ -26,35 +27,42 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
+    // Retrofit + Gson
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-        // Retrofit + Gson
-        implementation("com.squareup.retrofit2:retrofit:2.9.0")
-        implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // OkHttp pour logs HTTP
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
-        // OkHttp pour logs HTTP
-        implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    // Lifecycle ViewModel + Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-        // Lifecycle ViewModel + Compose
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-        implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    // Jetpack DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-        // Jetpack DataStore
-        implementation("androidx.datastore:datastore-preferences:1.0.0")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-        // Coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-        implementation ("com.journeyapps:zxing-android-embedded:4.3.0")//zxing scan qr
+    // ZXing pour scanner QR
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
+
+
+
+    // AndroidX + tests
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

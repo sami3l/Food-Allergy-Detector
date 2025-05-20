@@ -80,14 +80,22 @@
             android:layout_marginTop="16dp" />
 
         <!-- Evaluation result -->
-
         <ImageView
-            android:id="@+id/imageProduct"
+            android:id="@+id/imageViewProduct"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
-            android:visibility="visible"/>
+            android:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"/>
+
         <TextView
             android:id="@+id/textEvaluationResult"
             android:layout_width="match_parent"

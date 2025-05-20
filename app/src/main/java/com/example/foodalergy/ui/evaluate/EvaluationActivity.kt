@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+
 import com.example.foodalergy.R
 import com.example.foodalergy.data.model.*
 import com.example.foodalergy.data.network.RetrofitClient
@@ -26,8 +27,10 @@ class EvaluationActivity : AppCompatActivity() {
     private lateinit var btnEvaluate: Button
     private lateinit var textEvaluationResult: TextView
     private lateinit var btnDeleteScan: Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var imageViewProduct: ImageView
 
-    // Manual Entry fields
+    // Manual Entry
     private lateinit var btnManualEntry: Button
     private lateinit var manualEntryLayout: LinearLayout
     private lateinit var editProductName: EditText
@@ -45,13 +48,17 @@ class EvaluationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_evaluation)
         title = "Évaluation des allergies"
 
+        // Init views
         editTextAllergies = findViewById(R.id.editTextAllergies)
         btnScan = findViewById(R.id.btnScan)
         textScanResult = findViewById(R.id.textScanResult)
         btnEvaluate = findViewById(R.id.btnEvaluate)
         textEvaluationResult = findViewById(R.id.textEvaluationResult)
         btnDeleteScan = findViewById(R.id.btnDeleteScan)
+        progressBar = findViewById(R.id.progressBar)
+        imageViewProduct = findViewById(R.id.imageViewProduct)
 
+        // Manual
         btnManualEntry = findViewById(R.id.btnManualEntry)
         manualEntryLayout = findViewById(R.id.manualEntryLayout)
         editProductName = findViewById(R.id.editProductName)
@@ -68,7 +75,6 @@ class EvaluationActivity : AppCompatActivity() {
             isManualMode = !isManualMode
             manualEntryLayout.visibility = if (isManualMode) View.VISIBLE else View.GONE
             btnManualEntry.text = if (isManualMode) "Cancel Manual Entry" else getString(R.string.enter_product_manually)
-
             if (!isManualMode) {
                 editProductName.text.clear()
                 editBarcode.text.clear()
@@ -78,14 +84,8 @@ class EvaluationActivity : AppCompatActivity() {
     }
 
     private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_PERMISSION_CODE
-            )
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
         }
     }
 
@@ -110,12 +110,14 @@ class EvaluationActivity : AppCompatActivity() {
 
     private fun getProductFromScan(scanId: String) {
         textScanResult.text = "Chargement du produit..."
+        imageViewProduct.setImageDrawable(null)
 
         RetrofitClient.scanApi.getScan(scanId).enqueue(object : Callback<ProductResponse> {
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     scannedProduct = response.body()
                     textScanResult.text = "Produit : ${scannedProduct?.name ?: "Inconnu"}"
+
                     btnDeleteScan.visibility = Button.VISIBLE
                 } else {
                     textScanResult.text = "Produit introuvable"
@@ -132,7 +134,6 @@ class EvaluationActivity : AppCompatActivity() {
         val userId = UserSessionManager(this).getUserId()
         if (userId.isEmpty()) {
             textEvaluationResult.text = "ID utilisateur introuvable dans la session"
-            Toast.makeText(this, "ID utilisateur manquant dans la session", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -150,23 +151,31 @@ class EvaluationActivity : AppCompatActivity() {
             )
         }
 
+        // UI loading state
+        btnEvaluate.isEnabled = false
+        progressBar.visibility = View.VISIBLE
+        textEvaluationResult.text = "Évaluation en cours..."
+
         RetrofitClient.scanApi.evaluate(request).enqueue(object : Callback<EvaluateResponse> {
             override fun onResponse(call: Call<EvaluateResponse>, response: Response<EvaluateResponse>) {
+                btnEvaluate.isEnabled = true
+                progressBar.visibility = View.GONE
                 if (response.isSuccessful && response.body() != null) {
                     val result = response.body()
                     textEvaluationResult.text = """
-    Nom du produit : ${result?.productName}
-    Niveau de risque : ${result?.riskLevel}
-    Source : ${result?.source}
-    Allergènes détectés : ${result?.allergens?.joinToString(", ") ?: "Aucun"}
-""".trimIndent()
-
+                        🧾 Produit : ${result?.productName}
+                        ⚠️ Risque : ${result?.riskLevel}
+                        🧪 Source : ${result?.source}
+                        🚨 Allergènes détectés : ${result?.allergens?.joinToString(", ") ?: "Aucun"}
+                    """.trimIndent()
                 } else {
                     textEvaluationResult.text = "Erreur d’évaluation"
                 }
             }
 
             override fun onFailure(call: Call<EvaluateResponse>, t: Throwable) {
+                btnEvaluate.isEnabled = true
+                progressBar.visibility = View.GONE
                 textEvaluationResult.text = "Échec : ${t.message}"
             }
         })
@@ -180,6 +189,7 @@ class EvaluationActivity : AppCompatActivity() {
                     btnDeleteScan.visibility = Button.GONE
                     textScanResult.text = ""
                     scannedProduct = null
+                    imageViewProduct.setImageDrawable(null)
                 }
             }
 
@@ -189,6 +199,3 @@ class EvaluationActivity : AppCompatActivity() {
         })
     }
 }
-
-
-

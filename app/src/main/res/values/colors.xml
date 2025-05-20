@@ -1,11 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#7B47FF</color>
-    <color name="secondaryColor">#57D6AA</color>
-    <color name="backgroundColor">#F7F8FA</color>
-    <color name="textPrimary">#222222</color>
-    <color name="textSecondary">#666666</color>
-    <color name="danger">#EB5757</color>
-    <color name="grayLight">#F0F0F0</color>
-</resources>
+    <!-- Primary brand green -->
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
 
+    <!-- Secondary accent, soft mint -->
+    <color name="colorSecondary">#A5D6A7</color>
+    <color name="colorOnSecondary">#000000</color>
+
+    <!-- Dark background for high contrast -->
+    <color name="colorBackground">#F1F8E9</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#212121</color>
+
+    <!-- Bottom nav item states -->
+    <color name="nav_item_active">#2E7D32</color>
+    <color name="nav_item_inactive">#A5D6A7</color>
+</resources>

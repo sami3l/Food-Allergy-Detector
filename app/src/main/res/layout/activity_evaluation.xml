@@ -1,68 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    android:padding="20dp">
+    android:background="@color/colorBackground"
+    android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="8dp">
+        android:gravity="center_horizontal">
 
         <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/allergy_evaluation"
+            android:text="Allergy Evaluation"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="24dp" />
 
-        <!-- Allergies input -->
-        <EditText
-            android:id="@+id/editTextAllergies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_allergies_comma_separated"
-            android:background="@drawable/edit_text_background"
-            android:padding="12dp"
-            android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Scan button -->
+        <!-- Scan Button -->
         <Button
             android:id="@+id/btnScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scan a product"
-            android:backgroundTint="@color/primaryColor"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="12dp" />
+            android:text="Scan a Product"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorOnPrimary"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Scan result -->
+        <!-- Scanned Barcode Status -->
         <TextView
             android:id="@+id/textScanResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scanned product:"
-            android:textStyle="bold"
+            android:text=""
+            android:textColor="@color/colorOnSurface"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp" />
 
-        <!-- Manual entry toggle button -->
+        <!-- Product Info Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardProductInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="12dp"
+            card_view:cardElevation="4dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textProductName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📦 Product"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorOnSurface"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/textIngredients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🧾 Ingredients"
+                    android:textColor="@color/colorOnSurface"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/textAllergens"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🚨 Allergens"
+                    android:textColor="#D32F2F"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Product Image Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="12dp"
+            card_view:cardElevation="4dp"
+            android:layout_marginBottom="24dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageViewProduct"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Manual Entry Button -->
         <Button
             android:id="@+id/btnManualEntry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter manually"
-            android:backgroundTint="@color/secondaryColor"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="12dp" />
+            android:text="Enter Manually"
+            android:backgroundTint="@color/colorSecondary"
+            android:textColor="@color/colorOnSecondary"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Manual entry fields -->
+        <!-- Manual Entry Fields -->
         <LinearLayout
             android:id="@+id/manualEntryLayout"
             android:layout_width="match_parent"
@@ -75,9 +127,10 @@
                 android:id="@+id/editProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product name"
-                android:background="@drawable/edit_text_background"
-                android:padding="10dp"
+                android:hint="Product Name"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="12dp"
+                android:textColor="@color/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <EditText
@@ -85,39 +138,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Barcode"
-                android:background="@drawable/edit_text_background"
-                android:padding="10dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="12dp"
+                android:textColor="@color/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/editProductText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product description"
-                android:background="@drawable/edit_text_background"
-                android:padding="10dp"
-                android:layout_marginBottom="8dp" />
+                android:hint="Product Description"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="12dp"
+                android:textColor="@color/colorOnSurface"
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
 
-        <!-- Evaluate button -->
+        <!-- Evaluate Button -->
         <Button
             android:id="@+id/btnEvaluate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Evaluate product"
-            android:backgroundTint="@color/primaryColor"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="16dp" />
+            android:text="Evaluate Product"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorOnPrimary"
+            android:layout_marginBottom="24dp" />
 
-        <!-- Product image -->
-        <ImageView
-            android:id="@+id/imageViewProduct"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Progress bar -->
+        <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -126,22 +173,23 @@
             android:visibility="gone"
             android:layout_marginBottom="16dp" />
 
-        <!-- Evaluation result -->
+        <!-- Evaluation Result Text -->
         <TextView
             android:id="@+id/textEvaluationResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorOnSurface"
             android:textStyle="italic"
             android:textSize="14sp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Delete scan button -->
+        <!-- Delete Scan -->
         <Button
             android:id="@+id/btnDeleteScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete scan"
+            android:text="Delete Scan"
+            android:textStyle="bold"
             android:backgroundTint="#FF4444"
             android:textColor="@android:color/white"
             android:visibility="gone" />

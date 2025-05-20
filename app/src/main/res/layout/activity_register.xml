@@ -2,54 +2,111 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:background="@color/colorBackground">
 
-    <EditText
-        android:id="@+id/editTextUsername"
-        android:hint="Username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/editTextName"
-        android:hint="Full Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/editTextAllergies"
-        android:hint="Allergies (comma separated)"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/buttonSignUp"
-        android:text="Sign Up"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/customTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        android:text="Créer un compte - Food Allergy Detector"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:paddingBottom="32dp"/>
+
+    <!-- Username -->
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom d'utilisateur"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="@color/colorOnSurface"
+        android:textColorHint="@color/nav_item_inactive"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Password -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mot de passe"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="@color/colorOnSurface"
+        android:textColorHint="@color/nav_item_inactive"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Full Name -->
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom complet"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="@color/colorOnSurface"
+        android:textColorHint="@color/nav_item_inactive"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Email -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="@color/colorOnSurface"
+        android:textColorHint="@color/nav_item_inactive"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Allergies -->
+    <EditText
+        android:id="@+id/editTextAllergies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Allergies (séparées par des virgules)"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:textColor="@color/colorOnSurface"
+        android:textColorHint="@color/nav_item_inactive"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Sign Up Button -->
+    <Button
+        android:id="@+id/buttonSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Créer un compte"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorOnPrimary"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Loading Indicator -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Link to Login -->
     <TextView
         android:id="@+id/textLoginLink"
-        android:text="Already have an account? Sign In"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Déjà un compte ? Se connecter"
         android:gravity="center"
-        android:textColor="#0000EE"
-        android:layout_marginTop="16dp" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"/>
 </LinearLayout>

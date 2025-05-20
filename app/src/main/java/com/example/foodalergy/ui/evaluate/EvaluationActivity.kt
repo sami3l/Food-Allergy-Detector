@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -35,6 +36,12 @@ class EvaluationActivity : AppCompatActivity() {
     private lateinit var editBarcode: EditText
     private lateinit var editProductText: EditText
 
+    private lateinit var textProductName: TextView
+    private lateinit var textIngredients: TextView
+    private lateinit var textAllergens: TextView
+    private lateinit var cardProductInfo: CardView
+    private lateinit var cardProductImage: CardView
+
     private var isManualMode = false
     private var lastScanId: String? = null
     private var scannedProduct: ProductResponse? = null
@@ -47,6 +54,7 @@ class EvaluationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_evaluation)
         title = "Évaluation des allergies"
 
+        // UI Binding
         btnScan = findViewById(R.id.btnScan)
         textScanResult = findViewById(R.id.textScanResult)
         btnEvaluate = findViewById(R.id.btnEvaluate)
@@ -60,6 +68,15 @@ class EvaluationActivity : AppCompatActivity() {
         editProductName = findViewById(R.id.editProductName)
         editBarcode = findViewById(R.id.editBarcode)
         editProductText = findViewById(R.id.editProductText)
+
+        textProductName = findViewById(R.id.textProductName)
+        textIngredients = findViewById(R.id.textIngredients)
+        textAllergens = findViewById(R.id.textAllergens)
+        cardProductInfo = findViewById(R.id.cardProductInfo)
+        cardProductImage = findViewById(R.id.cardProductImage)
+
+        cardProductInfo.visibility = View.GONE
+        cardProductImage.visibility = View.GONE
 
         checkCameraPermission()
 
@@ -147,14 +164,15 @@ class EvaluationActivity : AppCompatActivity() {
     }
 
     private fun displayProductInfo(product: ProductInfoResponse) {
-        textScanResult.text = """
-            🧾 Produit : ${product.productName ?: "Non spécifié"}
-            📄 Ingrédients : ${product.ingredients ?: "Non spécifiés"}
-            🚨 Allergènes : ${product.allergens?.joinToString(", ") ?: "Aucun"}
-        """.trimIndent()
+        cardProductInfo.visibility = View.VISIBLE
+        cardProductImage.visibility = View.VISIBLE
+
+        textProductName.text = "📦 ${product.productName ?: "Non spécifié"}"
+        textIngredients.text = "🧾 ${product.ingredients ?: "Non spécifiés"}"
+        textAllergens.text = "🚨 ${product.allergens?.joinToString(", ") ?: "Aucun"}"
 
         if (!product.imageUrl.isNullOrEmpty()) {
-            Glide.with(this@EvaluationActivity)
+            Glide.with(this)
                 .load(product.imageUrl)
                 .into(imageViewProduct)
         } else {
@@ -206,17 +224,7 @@ class EvaluationActivity : AppCompatActivity() {
     }
 
     private fun displayEvaluationResult(product: ProductInfoResponse) {
-        textEvaluationResult.text = """
-            🧾 Produit : ${product.productName ?: "Non spécifié"}
-            📄 Ingrédients : ${product.ingredients ?: "Non spécifiés"}
-            🚨 Allergènes : ${product.allergens?.joinToString(", ") ?: "Aucun"}
-        """.trimIndent()
-
-        if (!product.imageUrl.isNullOrEmpty()) {
-            Glide.with(this@EvaluationActivity)
-                .load(product.imageUrl)
-                .into(imageViewProduct)
-        }
+        displayProductInfo(product)
     }
 
     private fun deleteScan(scanId: String) {
@@ -242,5 +250,7 @@ class EvaluationActivity : AppCompatActivity() {
         currentProductInfo = null
         lastScanId = null
         imageViewProduct.setImageDrawable(null)
+        cardProductInfo.visibility = View.GONE
+        cardProductImage.visibility = View.GONE
     }
 }
